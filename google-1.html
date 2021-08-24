@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOOGLE-1</title>
+    <style>
+        body{
+            background-image: url(https://media.geeksforgeeks.org/wp-content/uploads/20191212174641/bg1.png);
+        }
+        .c1 > h1{
+            margin-left: 450px;
+            /* border: 1px solid rgb(76, 207, 76); */
+            border-radius: 8px;
+            width: 390px;
+            /* height: 30px; */
+            font-size: 25px;
+            text-align: center;
+            color: white;
+            background-color: rgb(5, 5, 5);
+        }
+        .c2>h1{
+            margin-top: 45px;
+            margin-left: 55px;
+            border: 1px solid black;
+            width: 305px;
+        }
+        input{
+            margin-top: 15px;
+            margin-left: 55px;
+            border-radius: 5px;
+            background-color: white;
+            /* color: black; */
+            text-align: center;
+        }
+        .click{
+            background-color: green;
+        }
+        .login{
+            margin-left: 650px;
+            margin-top: -350px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="c1">
+            <h1>REGISTER AND LOGIN PAGE</h1>
+        </div>
+
+        <div class="c2">
+                <h1>Register Your Details</h1>
+                <form>
+                      <input type="text" id="name" placeholder="Enter Your Name"/><br>
+                      <input type="text" id="email;" placeholder="Enter Your Email"/><br>
+                      <input type="password" id="pswrd" placeholder="Enter Your Password"/><br>
+                      <input type="text" id="user" placeholder="Enter Your Username"/><br>
+                      <input type="number" id="mobile" placeholder="Enter Your Mobile number"/><br>
+                      <input type="text" id="desc" placeholder="Enter Description"/><br>
+                      <input class="click" type="submit" />
+                </form>
+        </div>
+
+      
+        <div class="login">
+            <h1>Login To Account</h1>
+            <form onsubmit="Login(event)">
+                Username:<br> <input type="text" id="inp7" /><br>
+                Password:<br> <input type="password" id="inp8" /><br>
+                <input class="click" type="submit" />
+            </form>
+        </div>
+               
+        
+    </div>
+</body>
+</html>
+<script>
+
+    function Register(e) {
+        e.preventDefault();
+
+        let register = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("pswrd").value,
+            username: document.getElementById("user").value,
+            mobile: document.getElementById("mobile").value,
+            description: document.getElementById("desc").value,
+
+        };
+        formdata = JSON.stringify(register);
+
+        fetch("https://masai-api-mocker.herokuapp.com/auth/register", {
+            method: 'POST',
+            body: register,
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        })
+            .then(function (res) {
+                res.json().then(function (res) {
+                    console.log("res", res);
+
+                })
+
+            })
+            .catch(function (err) {
+                console.log("err:", err);
+            });
+
+
+    }
+
+    function Login(e) {
+        e.preventDefault();
+
+        let register = {
+            username: document.getElementById("user").value,
+            password: document.getElementById("pswrd").value,
+        };
+
+        body = JSON.stringify(register);
+
+        fetch("https://masai-api-mocker.herokuapp.com/auth/login", {
+            method: 'POST',
+            body: body,
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        })
+            .then(function (res) {
+                res.json().then(function (res) {
+                    console.log("res", res);
+                    let u = register.username;
+                    let t = res.token;
+                    console.log(res.error);
+
+                    //getMyProfile(u, t);
+                    if(!res.error){
+                        window.location.href = "google2.html";
+                    }
+
+                })
+
+            })
+            .catch(function (err) {
+                console.log("err:", err);
+                alert("Incorrect username and password");
+            });
+
+
+       
+        }
+
+
+
+</script> 
