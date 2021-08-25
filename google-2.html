@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>g-2</title>
+    <style>
+        body{
+            background-image: url(https://www.pixel4k.com/wp-content/uploads/2018/03/Cross%20Colors449385434.jpg);
+        }
+        .c1 > h1{
+            text-align: center;
+            font-size: 100px;
+            color: white;
+        }
+        .search{
+            display: flex;
+            justify-content: center;
+           gap: 50px;
+        }
+        #srch{
+            text-align: center;
+            width: 400px;
+            height: 20px;
+            border-radius: 8px;
+            border: none;
+        }
+        button{
+            border-radius: 8px;
+            border: none;
+            font-size: 10px;
+            width: 100px;
+        }
+        .product{
+            font-size: 19px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .main{
+            color: teal;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="c1">
+            <h1>Google</h1>
+        </div>
+
+        <div class="search">
+            <input type="text" id="srch" placeholder="Search">
+            <button onclick="search_btn()">SEARCH</button>
+        </div>
+
+        <div id="srch-container"></div>
+    </div>
+</body>
+</html>
+<script>
+
+    let div_res = document.getElementById("srch-container");
+                        async function search_btn() {
+                        try {
+                        let product_result= document.getElementById("srch").value;
+
+
+                        document.getElementById("srch").value=null;
+
+
+            let res = await fetch(`http://api.serpstack.com/search?access_key=75bf7fd3acf297312db0efe7219a81d1&num=30&google_domain=google.com&query=${product_result}`);
+            let data = await res.json();
+            console.log("data: ", data);
+
+                  let { result } = data;
+        
+                 div_res.innerHTML = null;
+        
+                 result.forEach(({ title,url }) => {
+               
+                var div = document.createElement("div");
+                var div1 = document.createElement("div");
+                var div2 = document.createElement("div");
+                div1.innerHTML = url;
+                div1.setAttribute("class","product");
+                
+                div2.innerHTML = title;
+                div2.setAttribute("class", "main");
+
+                div.append(div1,div2);
+                div_res.append(div);
+                div1.addEventListener("click", function () {
+                    window.open(url);
+                });
+                div2.addEventListener("click", function () {
+                    window.open(url);
+                });
+            });
+        }
+        catch (err) {
+            console.log("err:", err);
+        }
+
+
+    }
+
+</script>
