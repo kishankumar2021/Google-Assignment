@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>g-2</title>
+    <style>
+        body{
+            background-image: url(https://www.pixel4k.com/wp-content/uploads/2018/03/Cross%20Colors449385434.jpg);
+        }
+        .c1 > h1{
+            text-align: center;
+            font-size: 100px;
+            color: white;
+        }
+        .search{
+            display: flex;
+            justify-content: center;
+           gap: 50px;
+        }
+        #srch{
+            text-align: center;
+            width: 400px;
+            height: 20px;
+            border-radius: 8px;
+            border: none;
+        }
+        button{
+            border-radius: 8px;
+            border: none;
+            font-size: 10px;
+            width: 100px;
+        }
+        .product{
+            font-size: 19px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .main{
+            color: teal;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="c1">
+            <h1>Google</h1>
+        </div>
+
+        <div class="search">
+            <input type="text" id="srch" placeholder="Search">
+            <button onclick="search_btn()">SEARCH</button>
+        </div>
+
+        <div id="srch-container"></div>
+    </div>
+</body>
+</html>
+<script>
+
+    let google = document.getElementById("content");
+    var div_part = document.getElementById("srch-container");
+    async function search_btn() {
+        try {
+            var search = document.getElementById("srch").value;
+          
+            let res = await fetch(`http://api.serpstack.com/search?access_key=75bf7fd3acf297312db0efe7219a81d1&num=30&google_domain=google.com&srch=${search}`);
+            let data = await res.json();
+            console.log("data: ", data);
+
+            let { result } = data;
+         
+            var p=15;
+
+            div_part.innerHTML = null;
+
+            dispResult(result.slice(0,p));
+
+            var n = Math.ceil(result.length/p);
+
+            console.log(n);
+            for (let i = 1; i <= n; i++) {
+                if(i!=n){
+                    var data1 = result.slice(p * (i - 1), p * i);
+                }else {
+                    data1 = result.slice(p * (i - 1));
+                }
+
+                display(i,data1);
+            }
+
+        }
+        catch (err) {
+            console.log("err:", err);
+        }
+
+
+    }
+
+
+    function display(num,data) {
+
+        var div = document.createElement("div");
+        div.innerHTML = num;
+        if(num==1) div.style.backgroundColor = "#4CAF50";
+        div.setAttribute("class","num");
+        div.addEventListener("click",function () {
+            dispResult(data);
+            var res = document.getElementsByClassName("num");
+      
+            for (let i = 0; i < res.length; i++) {
+                res[i].style.backgroundColor = "white";
+            }
+            div.style.backgroundColor = "white";
+        })
+        div_part.append(div);
+
+    }
+
+    function dispResult(result) {
+        google.innerHTML = null;
+        result.forEach(({ title, url }) => {
+          
+            var div = document.createElement("div");
+            var div1 = document.createElement("div");
+            var div2 = document.createElement("div");
+            div1.innerHTML = url;
+            div1.setAttribute("class", "product");
+
+            div2.innerHTML = title;
+            div2.setAttribute("class", "main");
+
+            div.append(div1, div2);
+            google.append(div);
+            div1.addEventListener("click", function () {
+                window.open(url);
+            });
+            div2.addEventListener("click", function () {
+                window.open(url);
+            });
+        });
+
+    }
+
+
+
+</script> 
